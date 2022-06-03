@@ -1,0 +1,219 @@
+﻿				   =========================================
+				   ===    DOCUMENTAÇÃO - PROJETO BASE    ===
+				   =========================================
+
+	Este arquivo contém a documentação do  projeto base de automação utilizando 
+a linguagem C# com  Selenium. Este é um projeto  de código livre,  que pode ser 
+alterado  conforme a  necessidade  do uso. Peço apenas a gentileza de  manter o 
+crédito do desenvolvedor, Ricardo Luis de Oliveira =)
+
+
+	1 - ESTRUTURA DO PROJETO
+	------------------------
+	
+	Por padrão, o projeto é constituido  de uma pasta principal denominada CORE,
+onde  ficam as  4 (quatro)  classes  principais  do  código:  Begin.cs,  DSL.cs, 
+GlobalVariables.cs e  LogSystem.cs.  As demais  estruturas do projeto  podem ser
+criadas conforme o  desejo  do desenvolvedor.  Sugiro, porém,  que sejam criadas 
+2 (duas) outras pastas para comportarem  as classes  de test e as pages que irão
+corresponder a estes testes. Caso seja feito desta forma, a classe eteste deverá
+referenciar a classe page  para que as funções sejam executadas na  classe teste
+conforme o exemplo abaixo:
+
+	Pasta Page -> classe ValidaCadstroPage.cs
+	Pasta Test -> classe ValidaCadastro.cs (ou ValidaCadastroTest.cs)
+
+	Referenciando a classe page dentro da classe test:
+	var page = new ValidaCadastroPage();
+
+	E a chamada da função na classe test:
+	page.ClicaMenuPrincipal();
+
+	Esta estrutura pode ser verificada no teste de exemplo deste projeto.
+
+
+	2 - CLASSES PRINCIPAIS
+	-----------------------
+
+	O projeto base conta com 4 (quatro)  classes principais  conforme citados no
+item anterior. Neste item falarei um poucos sobre cada um deles.
+
+	Begin.cs:
+	---------
+	A classe Begin.cs é a classe de início do projeto. Nela estão as funções que
+serão executadas sempre no início e no final de cada teste. Uma observação sobre 
+esta classe é que a função  AbreNavegador();  pode ser configurada para executar
+os testes em modo  "headless"  (onde os testes são executados sem a  exibição da 
+tela do navegador) ou em modo  "desenvolvedor"  (sem fechar o navegador ao final 
+da execução dos testes).
+
+	DSL.cs
+	------
+	Do acrônimo Domain Specific Language,  esta é a classe onde ficam as funções
+responsáveis pela integração com os elementos através do Selenium WebDriver. Por
+boas práticas, sugere-se que todo o código que utilize  Selenium para integração
+com o navegador fique nesta classe. No final desta documentação encontram-se  as
+as descrições de cada função bem como sua sintaxe de uso.
+
+	GlobalVariables.cs
+	------------------
+	Esta classe é responsável pelo armazenamento de variáveis que são utilizadas
+em todo o projeto.
+
+	LogSystem.cs
+	------------
+	Esta é a classe responsável pela geração de evidências dos testes através de
+arquivos em formato HTML, armazenados em uma pasta pré-definida, a qual pode ser 
+alterada dentro da própria classe. Dentro desta pasta são criadas  subpastas com
+a data  da execução  dos testes. As informações dos registros  dos arquvivos são
+capturadas através do retorno do conteúdo das funções  que validam  os  'steps'.
+Estes registros podem resultar 2 (dois) tipos de evidência: Apenas texto, quando
+o teste for positivo ou texto e  'print'  da tela,  quando o teste quebrar. Para
+fazer a captura destes retornos, usa-se a função Log();  onde a função principal
+é colocada dentro dos parêneteses. Exemplo:
+
+	Log(ClicaMenuPrincipal());
+
+
+	3 - HERANÇA DE CLASSES
+	----------------------
+
+	As classes principais do projeto (armazenadas na pasta Core) são dependentes
+umas das outras. Por este motivo, é necessário fazer com que  uma herde da outra
+as informações nelas contidas. Por padrão, montamos essa  estrutura de herança a
+partir da Begin.cs, pois é ela a responsável pela execução  primária de todos os
+demais testes. Em seguida temos a DSL.cs, seguido pelo LogSystem.cs e por último
+o GlobalVariables.cs. É importante ressaltar que, caso haja necessidade de mudar
+ou adicionar alguma classe no  Core do projeto, as novas classes  sigam a  mesma
+ordem, sempre deixando o GlobalVariables.cs  por último.  A estrutura então fica
+da seguinte forma:
+
+	Begin <- DSL <- LogSystem <- GlobalVariables
+
+	E, desta forma, todas as demais classes, tanto pages quanto testes, herdarão
+de Begin. Este exemplo pode ser observado no modelo de teste AcessaGmail.cs.
+
+	
+	4 - INTERAÇÃO DAS FUNÇÕES COM OS ELEMENTOS DA PÁGINA
+	----------------------------------------------------
+
+	Antes de falar da  estrutura das funções do sistema,  vale ressaltar  que há
+diferentes meios de interação dos testes com os elementos de uma página Web. Por
+exemplo: id, classname, cssSelector, linkText, xPath, etc.  Por padrão, todas as
+funções deste  projeto são configuradas para interagir  com os elementos através
+do código xPath, uma vez que, com xPath,  é possível a interação não somente por
+xPath, como os demais meios, utilizando xPath. Alguns exemplos:
+
+	Usando xPath para interagir com um elemento por id:
+	//*[@id='valorDoId']
+
+	Usando xPath para interagir com um elemento por name:
+	//*[@name='valorDoName']
+
+	Com xPath a interação é mais dinânica e possibilida uma variedade de criação
+de código (complexos ou simplifiacados) para interação com os elementos.
+
+
+	5 - ESTRUTURA DAS FUNÇÕES
+	-------------------------
+
+	Conforme citado  anteriormente  no item "LogSystem.cs",  as informações  que
+são gravadas nos arquivos  HTML são capturadas através das funções  que estão na
+DSL.cs. Estas funções são construídas com a estrutura 'try / catch' e a usa para
+validar os resultados positivos e negativos de uma  determinada requisição. Além
+disso, usa-se a variável global  'testPassed'  para validar  tanto o  sucesso do
+teste quanto o comportamento do LogSystem determinando qual tipo de arquivo HTML
+será gerado (somente texto ou texto + iamgem capturada).
+
+	Vamos ao exemplo de uma função. Temos abaixo a função ClicaElemento(); e sua
+estrutura completa:
+
+	public string ClicaElemento(string element, string msgOk, string msgError)
+	{
+		if (!testPassed) Assert.Fail();
+		try
+			{
+				driver.FindElement(By.XPath(element)).Click();
+				return msgOk + "<br>";
+			}
+		catch
+			{
+				testPassed = false;
+				return "<font color = red>" + msgError + testNok;
+			}
+		}
+	}
+
+	Explicando a função ClicaElemento(); tal sugere o nome, esta função tem como
+finalidade clicar em algum elemento da página (botão, link, etc).  Esta possui 3
+(três) variáveis que serão atribuídas  no código a seguir.  São elas  'element',
+representando o código xPath  da instrução e, respectivamente, msgOk e msgError, 
+as mensagens de validação e erro da função.
+
+	Explicadas as variáveis,  vamos falar dos componentes que formam a estrutura
+da função. Na primeira  linha temos um  'if'  que valida a condição  da variável
+'testPassed'. Caso seja true, o teste continua. Caso o teste  quebre, a variável
+recebe o valor false e  interrompe o teste.  Na sequência, temos a construção da
+estrutura try / cacth. Dentro do try, temos a instrução em  Selenium que executa
+um click no elemento determinado pela  variável  'element'. Logo abaixo  temos o 
+return da função com a  mensagem acertiva.  Em seguida, dentro do catch, temos a
+atribuição do  valor 'false' para a variável 'testPassed',  com a  finalidade de
+interromper o fluxo do teste. Finalmente, temos o return com a mensagem de erro.
+Só relembrando, o arquivo log é salvo em formato HTML. Por esse motivo é preciso
+incluir algumas tags HTML nos returns para que a estrutura do log seja criada de
+forma correta.
+
+	A estrutura vista a cima é a função primária, utilizando Selenium WebDriver,
+que deve ser  armazenada no arquivo  DSL.cs. Veremos agora a  construção  de uma
+função a ser utilizada no Page do projeto, para ser  chamada através  do arquivo
+Test. É nesta função  que informamos  todos os valores  a serem  atribuídos  nas
+variáveis das funções primárias contidas na DSL. Vejamos o exemplo abaixo:
+
+	public string ClicaBtnProxima()
+	{
+		return ClicaElemento(
+		"//*[contains(text(),'Próxima')]",
+		"Clicou no botão Próxima",
+		"Erro ao clicar no botão Próxima"
+		);
+	}
+
+	Assim como a função primária  ClicaElemento();,  as funções criadas  no Page
+devem ser do tipo 'string' pois precisam retornar as mensagens  de erro e acerto
+de cada passo. No exemplo  a cima, foi criada a função  ClicaBtnProxima();  para
+clicar no botão cujo texto é "Próxima". E a estrutura é  bem simples. Cria-se um
+return com a função primária desejada, passando os parâmetros conforme demanda a
+a função. No caso da  ClicaElemento();,  informa-se o  xPath  do elemento a  ser
+clicado e as mensagens de sucesso e erro da função.
+
+	Para finalizar, a função criada no Page deve ser chamada pelo arquivo teste,
+sendo encapsulada pela função Log();. Esta função tem o papel de armazenar todos
+os registros capturados pela função (mensagens de sucesso e erro). Desta forma:
+
+	Log(ClicaBtnProxima());
+
+
+	6 - GLOSSÁRIO: FUNÇÕES PRIMÁRIAS
+	--------------------------------
+
+	As funções primárias da classe DSL são classificadas em 3 (três) tipos:
+
+	De manipulação:
+	---------------
+	Funções que auxiliam a interação com elementos, como aguardar um determinado
+tempo ou limpar um campo já preenchido. Estas funções estão com  nomenclatura em
+inglês para diferenciá-las das demais.
+
+	De atribuição:
+	--------------
+	Funções que atribuem algum valor a uma variável, como capturar o texto de um
+determinado campo e guardá-lo em uma variável.
+
+
+	De validação:
+	-------------
+	(continua...)
+
+
+
+
