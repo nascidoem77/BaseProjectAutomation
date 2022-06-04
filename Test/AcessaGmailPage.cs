@@ -1,6 +1,6 @@
-﻿using ProjectBase.Core;
+﻿using BaseProjectAutomation.Core;
 
-namespace ProjectBase.Test
+namespace BaseProjectAutomation.Test
 {
     class AcessaGmailPage : Begin
     {

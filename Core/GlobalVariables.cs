@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace ProjectBase.Core
+namespace BaseProjectAutomation.Core
 {
     public class GlobalVariables
     {

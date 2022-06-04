@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace ProjectBase.Core
+namespace BaseProjectAutomation.Core
 {
     class DSL : LogSystem
     {

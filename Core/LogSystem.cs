@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using OpenQA.Selenium;
 
-namespace ProjectBase.Core
+namespace BaseProjectAutomation.Core
 {
     class LogSystem : GlobalVariables
     {

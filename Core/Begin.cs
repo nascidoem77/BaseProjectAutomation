@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 
-namespace ProjectBase.Core
+namespace BaseProjectAutomation.Core
 {
     class Begin : DSL
     {

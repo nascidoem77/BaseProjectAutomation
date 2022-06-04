@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using ProjectBase.Core;
+using BaseProjectAutomation.Core;
 
-namespace ProjectBase.Test
+namespace BaseProjectAutomation.Test
 {
     class AcessaGmail : Begin
     {
