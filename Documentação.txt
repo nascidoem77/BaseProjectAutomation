@@ -280,10 +280,10 @@ das funções criadas na classe page.
 	# ClicaElemento(string element, string msgOk, string msgError):  Clica em um
 elemento a partir de seu xPath.
 	Ex.: ClicaElemento(
-			"//*[@id='btnSalvar']",
-			"Clicou no botão Salvar",
-			"Erro ao clicar no botão Salvar"
-			);
+		"//*[@id='btnSalvar']",
+		"Clicou no botão Salvar",
+		"Erro ao clicar no botão Salvar"
+		);
 
 	# EscreveTexto(string element, string value, string msgOk, string msgError):
 Preenche um determinado campo com o valor informado.
