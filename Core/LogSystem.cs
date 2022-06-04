@@ -21,7 +21,7 @@ namespace BaseProjectAutomation.Core
 
             string fileName = GetType().Name;
             string folderDate = DateTime.Now.ToString("yyyy-MM-dd");
-            string filePath = "C:\\Projetos\\BaseProjectAutomation\\_Logs\\" + folderDate + "\\";
+            string filePath = @"C:\Projetos\BaseProjectAutomation\_Logs\" + folderDate + "\\";
             if (!Directory.Exists(filePath))
             {
                 Directory.CreateDirectory(filePath);

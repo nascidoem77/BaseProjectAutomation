@@ -10,6 +10,7 @@ namespace BaseProjectAutomation.Core
 {
     class DSL : LogSystem
     {
+        // Funções de interação ------------------------
         public void Wait(int time) => Thread.Sleep(time);
 
         public void WaitElement(string element)
@@ -34,6 +35,49 @@ namespace BaseProjectAutomation.Core
             return testOk;
         }
 
+
+        // Funções de atribuição ------------------------------------
+        public string CapturaDadosBy(string element, string attribute)
+        {
+            string value = driver.FindElement(By.XPath(element)).GetAttribute(attribute).Trim();
+            return value;
+        }
+        public string GeraStringPorTamanho(int times, string value)
+        {
+            string s = string.Empty;
+            for (int i = 0; i < times; i++)
+                s = string.Concat(s, value);
+            return s;
+        }
+        public string GeraStringNumericaAleatoria(int size)
+        {
+            var chars = "123456789";
+            var rnd = new Random();
+            var result = new string(
+                Enumerable.Repeat(chars, size)
+                .Select(s => s[rnd.Next(s.Length)])
+                .ToArray()); Wait(500);
+            return result;
+        }
+        public string GeraStringAlfanumericoAleatorio(int size)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var rnd = new Random();
+            var result = new string(
+                Enumerable.Repeat(chars, size)
+                .Select(s => s[rnd.Next(s.Length)])
+                .ToArray());
+            return result;
+        }
+        public string CapturaUrlAtual()
+        {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            var url = js.ExecuteScript("return document.URL");
+            return url.ToString();
+        }
+
+
+        // Funções de interação --------------------------------------------------
         public string ClicaElemento(string element, string msgOk, string msgError)
         {
             if (!testPassed) Assert.Fail();
@@ -48,7 +92,6 @@ namespace BaseProjectAutomation.Core
                 return "<font color = red>" + msgError + testNok;
             }
         }
-
         public string EscreveTexto(string element, string value, string msgOk, string msgError)
         {
             if (!testPassed) Assert.Fail();
@@ -63,7 +106,6 @@ namespace BaseProjectAutomation.Core
                 return "<font color = red>" + msgError + testNok;
             }
         }
-
         public string ValidaDados(string element, string value, string msgOk, string msgError)
         {
             if (!testPassed) Assert.Fail();
@@ -78,7 +120,6 @@ namespace BaseProjectAutomation.Core
                 return "<font color = red>" + msgError + testNok;
             }
         }
-
         public string MenuDropDown(string element, string value, string msgOk, string msgError)
         {
             if (!testPassed) Assert.Fail();
@@ -94,7 +135,6 @@ namespace BaseProjectAutomation.Core
                 return "<font color = red>" + msgError + testNok;
             }
         }
-
         public string UploadArquivo(string input, string path, string msgOk, string msgError)
         {
             if (!testPassed) Assert.Fail();
@@ -109,7 +149,6 @@ namespace BaseProjectAutomation.Core
                 return "<font color = red>" + msgError + testNok;
             }
         }
-
         public string DownloadArquivo(string fileName, string msgOk, string msgError)
         {
             if (!testPassed) Assert.Fail();
@@ -138,49 +177,6 @@ namespace BaseProjectAutomation.Core
                 testPassed = false;
                 return "<font color = red>" + msgError + testNok;
             }
-        }
-
-        public string CapturaDadosBy(string element, string attribute) // "innerText", "value"
-        {
-            string value = driver.FindElement(By.XPath(element)).GetAttribute(attribute).Trim();
-            return value;
-        }
-
-        public string GeraStringPorTamanho(int times, string value)
-        {
-            string s = string.Empty;
-            for (int i = 0; i < times; i++)
-                s = string.Concat(s, value);
-            return s;
-        }
-
-        public string GeraStringNumericaAleatoria(int size)
-        {
-            var chars = "123456789";
-            var rnd = new Random();
-            var result = new string(
-                Enumerable.Repeat(chars, size)
-                .Select(s => s[rnd.Next(s.Length)])
-                .ToArray()); Wait(500);
-            return result;
-        }
-
-        public string GeraStringAlfanumericoAleatorio(int size)
-        {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var rnd = new Random();
-            var result = new string(
-                Enumerable.Repeat(chars, size)
-                .Select(s => s[rnd.Next(s.Length)])
-                .ToArray());
-            return result;
-        }
-
-        public string CapturaUrlAtual()
-        {
-            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-            var url = js.ExecuteScript("return document.URL");
-            return url.ToString();
         }
     }
 }

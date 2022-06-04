@@ -193,8 +193,8 @@ os registros capturados pela função (mensagens de sucesso e erro). Desta forma
 	Log(ClicaBtnProxima());
 
 
-	6 - GLOSSÁRIO: FUNÇÕES PRIMÁRIAS
-	--------------------------------
+	6 - TIPOS DE FUNÇÕES PRIMÁRIAS
+	------------------------------
 
 	As funções primárias da classe DSL são classificadas em 3 (três) tipos:
 
@@ -210,10 +210,125 @@ inglês para diferenciá-las das demais.
 determinado campo e guardá-lo em uma variável.
 
 
-	De validação:
+	De interação:
 	-------------
-	(continua...)
+	Funções que interagem com o sistema e validam os steps  pré-estabelecidos no
+teste. Estas funções também são responsáveis pelo armazenamento das mensagens de 
+erro ou sucesso dos testes.
 
 
+	7 - GLOSSÁRIO: FUNÇÕES PRIMÁRIAS
+	--------------------------------
 
+	----------------------
+	Funções de manipulação
+	----------------------
+
+	# Wait(int time): Usa-se para fazer pausa entre funções.
+	Ex.: Wait(2000);
+
+	# WaitElement(string element): Aguarda até que o elemento  desejado  apareça
+na tela. O tempo de espera pode ser alterado.
+	Ex.: WaitElement("//*[@id='btnSalvar']");
+
+	# WaitElementGone(string element): Aguarda até que um elemento que esteja na
+tela desapareça. O tempo de espera pode ser alterado.
+	Ex.: WaitElementGone("//*[@id='modalAlert']");
+
+	# ClearData(string element): Limpa o conteúdo de um campo.
+	Ex.: ClearData(//*[@id='campoNome']);
+
+	# ClickOut(): Clica fora de um determinado campo.
+
+	# EndFile():  Usa-se no final de cada  classe de teste  com a  finalidade de
+validar como true a variável testPassed e imprimir no arquivo log a mensagem  de
+Fim do Teste OK.
+	Sintaxe: Log(EndFile());
+
+	---------------------
+	Funções de atribuição
+	---------------------
+
+	# CapturaDadosBy(string element, string attribute):  Captura o valor  de  um
+campo ou elemento e o atribui a uma variável. Pode ser usado como atributo Value,
+ InnerText, etc.
+	Ex.: string numProposta = CapturaDadosBy("xpathExemplo", "InnerText");
+
+	# GeraStringPorTamanho(int times, string value):  Gera string com  um  valor
+pré-estabelecido. Útil para validação de tamanho máximo de caracteres num campo.
+	Ex.: string maxSize10 = GeraStringPorTamanho(10, A);
+
+	# GeraStringNumericaAleatoria(int size): Gera string numérica com númmero de
+caracteres pré-estabelecido.
+	Ex.: string strNum10 = GeraStringNumericaAleatoria(10);
+
+	# GeraStringAlfanumericoAleatorio(int size):  Gera string  alfanumérica  com
+número de caracteres pré-estabelecido.
+	Ex.: string strChar7 = GeraStringAlfanumericoAleatorio(7);
+
+	# CapturaUrlAtual(): Captura o endereço atual exibido na barra do  navegador
+e o atribui a uma variável.
+	Ex.: string urlAtual = CapturaUrlAtual();
+
+	--------------------
+	Funções de interação
+	--------------------
+
+	Observação: Todas as funções de interação devem  ser utilizadas  como return
+das funções criadas na classe page.
+
+	# ClicaElemento(string element, string msgOk, string msgError):  Clica em um
+elemento a partir de seu xPath.
+	Ex.: ClicaElemento(
+			"//*[@id='btnSalvar']",
+			"Clicou no botão Salvar",
+			"Erro ao clicar no botão Salvar"
+			);
+
+	# EscreveTexto(string element, string value, string msgOk, string msgError):
+Preenche um determinado campo com o valor informado.
+	Ex.: EscreveTexto(
+		"//*[@id='campoNome']",
+		"Ricardo Oliveira", 
+		"Preencheu o nome Ricardo Oliveira",
+		"Erro ao preencher o nome Ricardo Oliveira"
+		);
+
+	# ValidaDados(string element, string value, string msgOk, string msgError):
+Verifica se o valor informado está presente no local do xPath indicado.
+	Ex.: ValidaDados(
+		"//*[@id='colunaCEP']",
+		"01409-020", 
+		"Validou o CEP 01409-020",
+		"Erro ao validar o CEP 01409-020"
+		);
+
+	# MenuDropDown(string element, string value, string msgOk, string msgError):
+Substitui o SelectDropDown do Selenium (que só funciona em menus simples). clica
+no menu desejado através de xPath e seleciona o valor desejado dentro do menu.
+	Ex.: MenuDropDown(
+		"//*[@id='menuEstado']",
+		"São Paulo", 
+		"Selecionou o Estado São Paulo",
+		"Erro ao selecionar o Estado São Paulo"
+		);
+
+	# UploadArquivo(string input, string path, string msgOk, string msgError):
+Seleciona um determinado arquivo para fazer upload através do  caminho local do
+arquivo apontando para o input da página.
+	Ex.: UploadArquivo(
+		"//*[@id='uploadfile']",
+		@"C:\Projetos\Documentação.txt", 
+		"Selecionou o arquivo Documentação.txt",
+		"Erro ao selecionar o arquivo Documentação.txt"
+		);
+
+	# DownloadArquivo(string fileName, string msgOk, string msgError):  Verifica
+o download de um arquivo através do seu nome. Por padrão, a validação é feita na
+pasta Downloads do Windows. Este caminho pode ser alterado na função.
+	Ex.: DownloadArquivo(
+	"planilhaXYZ.xlsx",
+	"Validou o download do arquivo planilhaXYZ.xlsx",
+	"Erro ao validar o download do arquivo planilhaXYZ.xlsx"
+	);
 
