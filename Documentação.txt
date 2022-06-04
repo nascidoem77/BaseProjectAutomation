@@ -327,8 +327,8 @@ arquivo apontando para o input da página.
 o download de um arquivo através do seu nome. Por padrão, a validação é feita na
 pasta Downloads do Windows. Este caminho pode ser alterado na função.
 	Ex.: DownloadArquivo(
-	"planilhaXYZ.xlsx",
-	"Validou o download do arquivo planilhaXYZ.xlsx",
-	"Erro ao validar o download do arquivo planilhaXYZ.xlsx"
-	);
+		"planilhaXYZ.xlsx",
+		"Validou o download do arquivo planilhaXYZ.xlsx",
+		"Erro ao validar o download do arquivo planilhaXYZ.xlsx"
+		);
 
