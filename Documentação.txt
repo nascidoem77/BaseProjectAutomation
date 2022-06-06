@@ -270,6 +270,26 @@ número de caracteres pré-estabelecido.
 e o atribui a uma variável.
 	Ex.: string urlAtual = CapturaUrlAtual();
 
+	# GeraNomeAleatorio(): Gera nome aleatório (nome e sobrenome)  e o atribui a
+uma variável.
+	Ex.: string nome = GeraNomeAleatorio();
+
+	# GeraEmailAleatorio(): Gera e-mail aleatório e o atribui a uma variável
+	Ex.: string email = GeraEmailAleatorio();
+
+	# GeraDataNascimento(): Gera uma data de nascimento aleatória  e a atribui a
+uma variável.
+	Ex.: string dataNascRnd = GeraDataNascimento();
+
+	# GeraCPF(): Gera CPF aleatório e o atribui a uma variável.
+	Ex.: string cpf = GeraCPF();
+
+	# GeraCNPJ(): Gera CNPJ aleatório e o atribui a uma variável.
+	Ex.: string cnpj = GeraCNPJ);
+
+		# GeraCEP(): Gera CEP aleatório e o atribui a uma variável.
+	Ex.: string cep = GeraCEP();
+
 	--------------------
 	Funções de interação
 	--------------------
