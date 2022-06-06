@@ -297,13 +297,15 @@ uma variável.
 	Observação: Todas as funções de interação devem  ser utilizadas  como return
 das funções criadas na classe page.
 
-	# ClicaElemento(string element, string msgOk, string msgError):  Clica em um
+	# ClicaElemento(string element, string msgOk, string msgError, int wait = 1000)
 elemento a partir de seu xPath.
 	Ex.: ClicaElemento(
 		"//*[@id='btnSalvar']",
 		"Clicou no botão Salvar",
-		"Erro ao clicar no botão Salvar"
-		);
+		"Erro ao clicar no botão Salvar",
+		3000);
+	Observação: Por padrão, esta função tem timer de 1 segundo após o clique. Este
+valor pode ser alterado conforme mostrado aqui, digitando o valor esperado.
 
 	# EscreveTexto(string element, string value, string msgOk, string msgError):
 Preenche um determinado campo com o valor informado.

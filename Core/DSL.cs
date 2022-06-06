@@ -4,6 +4,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace BaseProjectAutomation.Core
@@ -170,12 +171,13 @@ namespace BaseProjectAutomation.Core
 
 
         // Funções de interação --------------------------------------------------
-        public string ClicaElemento(string element, string msgOk, string msgError)
+        public string ClicaElemento(string element, string msgOk, string msgError, int wait = 1000, string loading = null)
         {
             if (!testPassed) Assert.Fail();
             try
             {
-                driver.FindElement(By.XPath(element)).Click();
+                driver.FindElement(By.XPath(element)).Click(); Wait(wait);
+                if (loading != null) WaitElementGone("value");
                 return msgOk + "<br>";
             }
             catch
@@ -198,7 +200,7 @@ namespace BaseProjectAutomation.Core
                 return "<font color = red>" + msgError + testNok;
             }
         }
-        public string ValidaDados(string element, string value, string msgOk, string msgError)
+        public string ValidaDados(string element, string value, [Optional] string msgOk, [Optional] string msgError)
         {
             if (!testPassed) Assert.Fail();
             try
@@ -212,7 +214,7 @@ namespace BaseProjectAutomation.Core
                 return "<font color = red>" + msgError + testNok;
             }
         }
-        public string MenuDropDown(string element, string value, string msgOk, string msgError)
+        public string MenuDropDown(string element, string value, [Optional] string msgOk, [Optional] string msgError)
         {
             if (!testPassed) Assert.Fail();
             try
