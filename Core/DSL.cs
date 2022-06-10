@@ -177,12 +177,13 @@ namespace BaseProjectAutomation.Core
                 return "<font color = red>" + msgError + testNok;
             }
         }
-        public string EscreveTexto(string element, string value, [Optional] string msgOk, [Optional] string msgError)
+        public string EscreveTexto(string element, string value, [Optional] string msgOk, [Optional] string msgError, string clickOu = null)
         {
             if (!testPassed) Assert.Fail();
             try
             {
                 driver.FindElement(By.XPath(element)).SendKeys(value);
+                if (clickOu != null) ClickOut();
                 return msgOk + "<br>";
             }
             catch

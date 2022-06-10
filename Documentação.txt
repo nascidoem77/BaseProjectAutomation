@@ -174,8 +174,7 @@ variáveis das funções primárias contidas na DSL. Vejamos o exemplo abaixo:
 		return ClicaElemento(
 		"//*[contains(text(),'Próxima')]",
 		"Clicou no botão Próxima",
-		"Erro ao clicar no botão Próxima"
-		);
+		"Erro ao clicar no botão Próxima");
 	}
 
 	Assim como a função primária  ClicaElemento();,  as funções criadas  no Page
@@ -313,8 +312,7 @@ Preenche um determinado campo com o valor informado.
 		"//*[@id='campoNome']",
 		"Ricardo Oliveira", 
 		"Preencheu o nome Ricardo Oliveira",
-		"Erro ao preencher o nome Ricardo Oliveira"
-		);
+		"Erro ao preencher o nome Ricardo Oliveira"	);
 
 	# ValidaDados(string element, string value, string msgOk, string msgError):
 Verifica se o valor informado está presente no local do xPath indicado.
@@ -322,8 +320,7 @@ Verifica se o valor informado está presente no local do xPath indicado.
 		"//*[@id='colunaCEP']",
 		"01409-020", 
 		"Validou o CEP 01409-020",
-		"Erro ao validar o CEP 01409-020"
-		);
+		"Erro ao validar o CEP 01409-020");
 
 	# MenuDropDown(string element, string value, string msgOk, string msgError):
 Substitui o SelectDropDown do Selenium (que só funciona em menus simples). clica
@@ -332,8 +329,7 @@ no menu desejado através de xPath e seleciona o valor desejado dentro do menu.
 		"//*[@id='menuEstado']",
 		"São Paulo", 
 		"Selecionou o Estado São Paulo",
-		"Erro ao selecionar o Estado São Paulo"
-		);
+		"Erro ao selecionar o Estado São Paulo");
 
 	# UploadArquivo(string input, string path, string msgOk, string msgError):
 Seleciona um determinado arquivo para fazer upload através do  caminho local do
@@ -342,8 +338,7 @@ arquivo apontando para o input da página.
 		"//*[@id='uploadfile']",
 		@"C:\Projetos\Documentação.txt", 
 		"Selecionou o arquivo Documentação.txt",
-		"Erro ao selecionar o arquivo Documentação.txt"
-		);
+		"Erro ao selecionar o arquivo Documentação.txt");
 
 	# DownloadArquivo(string fileName, string msgOk, string msgError):  Verifica
 o download de um arquivo através do seu nome. Por padrão, a validação é feita na
@@ -351,6 +346,4 @@ pasta Downloads do Windows. Este caminho pode ser alterado na função.
 	Ex.: DownloadArquivo(
 		"planilhaXYZ.xlsx",
 		"Validou o download do arquivo planilhaXYZ.xlsx",
-		"Erro ao validar o download do arquivo planilhaXYZ.xlsx"
-		);
-
+		"Erro ao validar o download do arquivo planilhaXYZ.xlsx");
