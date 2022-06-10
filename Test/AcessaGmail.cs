@@ -10,6 +10,9 @@ namespace BaseProjectAutomation.Test
         {
             var page = new AcessaGmailPage();
 
+            // Define nome para arquivo log (null = class name)
+            logFileName = "Acessa G-Mail";
+
             // Define o cabeçalho do log
             Log(page.LogHeader());
 

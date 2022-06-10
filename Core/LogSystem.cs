@@ -7,6 +7,7 @@ namespace BaseProjectAutomation.Core
 {
     class LogSystem : GlobalVariables
     {
+        public string logFileName; string fileName;
         public StringBuilder log = new StringBuilder();
         public void Log(string text)
         {
@@ -17,9 +18,11 @@ namespace BaseProjectAutomation.Core
             string htmlStart = "<html><body><p><font face = Verdana size = 2>";
             string htmlEnd = "</p></font></body></html>";
             string header = "<b>ACESSO AO SISTEMA<br>==============</b><br>" +
-                "Abriu o navegador e acessou o <b>NOME DO SITE / SISTEMA</b><p>";
+                "Abriu o navegador e acessou o <b>BMG SEGUROS</b><p>";
 
-            string fileName = GetType().Name;
+            if (logFileName != null) { fileName = logFileName; }
+            else { fileName = GetType().Name; }
+
             string folderDate = DateTime.Now.ToString("yyyy-MM-dd");
             string filePath = @"C:\Projetos\BaseProjectAutomation\_Logs\" + folderDate + "\\";
             if (!Directory.Exists(filePath))
