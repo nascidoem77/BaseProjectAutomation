@@ -14,14 +14,14 @@ namespace BaseProjectAutomation.Test
             logFileName = "Acessa G-Mail";
 
             // Define o cabeçalho do log
-            Log(page.LogHeader());
+            page.LogHeader();
 
             // Execução dos steps
-            Log(page.PreencheEmail());
-            Log(page.ClicaBtnProxima());
+            page.PreencheEmail();
+            page.ClicaBtnProxima();
 
             // Fim do Teste
-            Log(EndFile());
+            EndFile();
         }
     }
 }

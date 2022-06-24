@@ -11,11 +11,11 @@ namespace BaseProjectAutomation.Core
 {
     class DSL : LogSystem
     {
-        // Funções de interação ------------------------
+        #region Funções de interação
         public void Wait(int time) => Thread.Sleep(time);
         public void ClearData(string element) => driver.FindElement(By.XPath(element)).Clear();
         public void ClickOut() => driver.FindElement(By.XPath("//html")).Click();
-        public string EndFile() { if (!testPassed) { Assert.Fail(); } return testOk; }
+        public string EndFile() { if (!testPassed) { Assert.Fail(); } return Log(testOk); }
         public void WaitElement(string element)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(90));
@@ -26,9 +26,9 @@ namespace BaseProjectAutomation.Core
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(90));
             Wait(1000); wait.Until(d => d.FindElements(By.XPath(element)).Count == 0); Wait(2000);
         }
+        #endregion
 
-
-        // Funções de atribuição ------------------------------------
+        #region Funções de atribuição
         public string CapturaDadosBy(string element, string attribute)
         {
             string value = driver.FindElement(By.XPath(element)).GetAttribute(attribute).Trim();
@@ -159,37 +159,40 @@ namespace BaseProjectAutomation.Core
             string cepRnd = cep[rnd.Next(cep.Length)];
             return cepRnd;
         }
-
+        #endregion
 
         // Funções de interação --------------------------------------------------
-        public string ClicaElemento(string element, [Optional] string msgOk, [Optional] string msgError, int wait = 1000, string loading = null)
+        public string ValidaStep(string msgOk, string msgError)
+        {
+            if (testPassed)
+            { return Log(msgOk + "<br>"); }
+            else { return Log("<font color = red>" + msgError + testNok); }
+        }
+
+        public void ClicaElemento(string element, int wait = 1000, string loading = null)
         {
             if (!testPassed) Assert.Fail();
             try
             {
                 driver.FindElement(By.XPath(element)).Click(); Wait(wait);
                 if (loading != null) WaitElementGone("value");
-                return msgOk + "<br>";
             }
             catch
             {
                 testPassed = false;
-                return "<font color = red>" + msgError + testNok;
             }
         }
-        public string EscreveTexto(string element, string value, [Optional] string msgOk, [Optional] string msgError, string clickOu = null)
+        public void EscreveTexto(string element, string value, string clickOut = null)
         {
             if (!testPassed) Assert.Fail();
             try
             {
                 driver.FindElement(By.XPath(element)).SendKeys(value);
-                if (clickOu != null) ClickOut();
-                return msgOk + "<br>";
+                if (clickOut != null) ClickOut();
             }
             catch
             {
                 testPassed = false;
-                return "<font color = red>" + msgError + testNok;
             }
         }
         public string ValidaDados(string xPath, string value, [Optional] string msgOk, [Optional] string msgError)

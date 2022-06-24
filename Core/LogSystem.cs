@@ -8,10 +8,10 @@ namespace BaseProjectAutomation.Core
     class LogSystem : GlobalVariables
     {
         public string logFileName; string fileName;
-        public StringBuilder log = new StringBuilder();
-        public void Log(string text)
+        public static StringBuilder log = new StringBuilder();
+        public string Log(string text)
         {
-            log.Append(text);
+            return log.Append(text).ToString(); ;
         }
         public void SaveLog()
         {

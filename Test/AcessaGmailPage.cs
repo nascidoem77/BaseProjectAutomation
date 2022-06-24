@@ -6,25 +6,18 @@ namespace BaseProjectAutomation.Test
     {
         public string LogHeader()
         {
-            return "<b>TESTE:</b> Acessa G-Mail<br><b>==============</b><p>";
+            return Log("<b>TESTE:</b> Acessa G-Mail<br><b>=============</b><p>");
         }
-        public string PreencheEmail()
+        public void PreencheEmail()
         {
             string email = "ricardo.bornin77@gmail.com";
-            return EscreveTexto(
-                    "//*[@id='identifierId']",
-                    email,
-                    "Preencheu o e-mail " + email,
-                    "Erro ao preencher o e-mail " + email
-                    );
+            EscreveTexto("//*[@id='identifierId']", email);
+            ValidaStep("Preencheu e-mail " + email, "Erro ao preencher e-mail " + email);
         }
-        public string ClicaBtnProxima()
+        public void ClicaBtnProxima()
         {
-            return ClicaElemento(
-                "//*[contains(text(),'Próxima')]",
-                "Clicou no botão Próxima",
-                "Erro ao clicar no botão Próxima"
-                );
+            ClicaElemento("//*[contains(text(),'Próxima')]");
+            ValidaStep("Clicou no botão Próxima", "Erro ao clicar no botão Próxima");
         }
     }
 }
