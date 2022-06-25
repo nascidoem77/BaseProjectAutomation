@@ -287,7 +287,7 @@ uma variável.
 	Observação: Todas as funções de interação devem  ser utilizadas  como return
 das funções criadas na classe page.
 
-	# ClicaElemento(string element, int wait = 1000)
+	# ClicaElemento(string element, int wait = 1000):
 	Clica num determinado elemento a partir de seu xPath.
 
 	Exemplo: 
@@ -300,42 +300,40 @@ valor pode ser alterado conforme mostrado aqui, digitando o valor esperado.
 	# EscreveTexto(string element, string value):
 	Preenche um determinado campo com o valor informado.
 
-	Exemplo: EscreveTexto(
-		"//*[@id='campoNome']",
-		"Ricardo Oliveira", 
-		"Preencheu o nome Ricardo Oliveira",
-		"Erro ao preencher o nome Ricardo Oliveira"	);
+	Exemplo:
+	EscreveTexto("//*[@id='campoNome']","Ricardo Oliveira");
+	ValidaStep("Preencheu o nome Ricardo Oliveira",
+				"Erro ao preencher o nome Ricardo Oliveira");
+	
+	# ValidaDados(string element, string value):
+	Verifica se o valor informado está presente no local do xPath indicado.
 
-	# ValidaDados(string element, string value, string msgOk, string msgError):
-Verifica se o valor informado está presente no local do xPath indicado.
-	Exemplo: ValidaDados(
-		"//*[@id='colunaCEP']",
-		"01409-020", 
-		"Validou o CEP 01409-020",
-		"Erro ao validar o CEP 01409-020");
+	Exemplo:
+	ValidaDados("//*[@id='colunaCEP']", "01409-020"); 
+	ValidaStep("Validou o CEP 01409-020","Erro ao validar o CEP 01409-020");
 
-	# MenuDropDown(string element, string value, string msgOk, string msgError):
-Substitui o SelectDropDown do Selenium (que só funciona em menus simples). clica
-no menu desejado através de xPath e seleciona o valor desejado dentro do menu.
-	Exemplo: MenuDropDown(
-		"//*[@id='menuEstado']",
-		"São Paulo", 
-		"Selecionou o Estado São Paulo",
-		"Erro ao selecionar o Estado São Paulo");
+	# MenuDropDown(string element, string value):
+	Substitui o SelectDropDown  do Selenium  (que só funciona em menus simples).
 
-	# UploadArquivo(string input, string path, string msgOk, string msgError):
-Seleciona um determinado arquivo para fazer upload através do  caminho local do
-arquivo apontando para o input da página.
-	Exemplo: UploadArquivo(
-		"//*[@id='uploadfile']",
-		@"C:\Projetos\Documentação.txt", 
-		"Selecionou o arquivo Documentação.txt",
-		"Erro ao selecionar o arquivo Documentação.txt");
+	Exemplo:
+	MenuDropDown("//*[@id='menuEstado']","São Paulo");
+	ValidaStep("Selecionou o Estado São Paulo",
+				"Erro ao selecionar o Estado São Paulo");
 
-	# DownloadArquivo(string fileName, string msgOk, string msgError):  Verifica
-o download de um arquivo através do seu nome. Por padrão, a validação é feita na
-pasta Downloads do Windows. Este caminho pode ser alterado na função.
-	Exemplo: DownloadArquivo(
-		"planilhaXYZ.xlsx",
-		"Validou o download do arquivo planilhaXYZ.xlsx",
-		"Erro ao validar o download do arquivo planilhaXYZ.xlsx");
+	# UploadArquivo(string input, string path):
+	Seleciona um determinado arquivo para fazer upload através do caminho local
+	do arquivo apontando para o input da página.
+
+	Exemplo: UploadArquivo("//*[@id='uploadfile']", 
+				@"C:\Projetos\Documentação.txt");
+	ValidaStep("Selecionou o arquivo Documentação.txt",
+				"Erro ao selecionar o arquivo Documentação.txt");
+
+	# DownloadArquivo(string fileName):
+	Verifica o download de um arquivo através do seu nome.  A validação é feita
+	na pasta Downloads do Windows (por padrão). Este caminho  pode ser alterado
+	na função.
+
+	Exemplo: DownloadArquivo("planilhaXYZ.xlsx");
+	ValidaStep(	"Validou o download do arquivo planilhaXYZ.xlsx",
+				"Erro ao validar o download do arquivo planilhaXYZ.xlsx");
