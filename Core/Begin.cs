@@ -5,10 +5,11 @@ namespace BaseProjectAutomation.Core
 {
     class Begin : DSL
     {
-        // Executar os testes em modo "headless"
+        #region Executar os testes em modo "headless"
         public bool headlessTest = false;
+        #endregion
 
-        // Abre navegador com argumentos pré-definidos
+        #region Abre navegador com argumentos pré-definidos
         public void AbreNavegador()
         {
             ChromeOptions headlessMode = new ChromeOptions();
@@ -23,14 +24,18 @@ namespace BaseProjectAutomation.Core
             if (headlessTest) { driver = new ChromeDriver(headlessMode); }
             else { driver = new ChromeDriver(devMode); driverQuit = false; }
         }
+        #endregion
 
+        #region SetUp
         [SetUp]
         public void StartTest()
         {
             AbreNavegador();
             driver.Navigate().GoToUrl("http://www.gmail.com.br");
         }
+        #endregion
 
+        #region TearDown
         [TearDown]
         public void EndTest()
         {
@@ -40,5 +45,6 @@ namespace BaseProjectAutomation.Core
             // Fecha navegador após teste
             if (driverQuit) { driver.Quit(); }
         }
+        #endregion
     }
 }

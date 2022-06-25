@@ -69,10 +69,17 @@ a data  da execução  dos testes. As informações dos registros  dos arquvivos
 capturadas através do retorno do conteúdo das funções  que validam  os  'steps'.
 Estes registros podem resultar 2 (dois) tipos de evidência: Apenas texto, quando
 o teste for positivo ou texto e  'print'  da tela,  quando o teste quebrar. Para
-fazer a captura destes retornos, usa-se a função Log();  onde a função principal
-é colocada dentro dos parêneteses. Exemplo:
+fazer a captura destes retornos, usa-se a função ValidaStep();  onde a função  é
+colocada ao final de cada método na page. Exemplo:
 
-	Log(ClicaMenuPrincipal());
+	public void ClicaBtnProxima()
+	{
+		return ClicaElemento("//*[contains(text(),'Próxima')]");
+		ValidaStep("Clicou no botão Próxima", "Erro ao clicar no botão Próxima");
+	}
+
+	Desta forma,  caso o teste passe,  a função retorna a frase positiva. Caso o
+teste não passe, a função retorna a frase negativa.
 
 
 	3 - HERANÇA DE CLASSES
@@ -117,79 +124,64 @@ de código (complexos ou simplifiacados) para interação com os elementos.
 	5 - ESTRUTURA DAS FUNÇÕES
 	-------------------------
 
-	Conforme citado  anteriormente  no item "LogSystem.cs",  as informações  que
-são gravadas nos arquivos  HTML são capturadas através das funções  que estão na
-DSL.cs. Estas funções são construídas com a estrutura 'try / catch' e a usa para
-validar os resultados positivos e negativos de uma  determinada requisição. Além
-disso, usa-se a variável global  'testPassed'  para validar  tanto o  sucesso do
-teste quanto o comportamento do LogSystem determinando qual tipo de arquivo HTML
-será gerado (somente texto ou texto + iamgem capturada).
+	As funções primárias do sistema são armazenadas na classe DSL.cs.  Estas são
+construídas com a estrutura 'try / catch' para validar os resultados positivos e
+negativos de uma  determinada requisição.  Além disso, usa-se a variável  global
+'testPassed' para  validar  tanto o sucesso do  teste  quanto o comportamento do
+LogSystem determinando qual tipo de arquivo  HTML será gerado  (somente texto ou
+texto + iamgem capturada).
 
 	Vamos ao exemplo de uma função. Temos abaixo a função ClicaElemento(); e sua
 estrutura completa:
 
-	public string ClicaElemento(string element, string msgOk, string msgError)
+	public void ClicaElemento(string element)
 	{
 		if (!testPassed) Assert.Fail();
 		try
 			{
 				driver.FindElement(By.XPath(element)).Click();
-				return msgOk + "<br>";
 			}
 		catch
 			{
 				testPassed = false;
-				return "<font color = red>" + msgError + testNok;
 			}
 		}
 	}
 
 	Explicando a função ClicaElemento(); tal sugere o nome, esta função tem como
-finalidade clicar em algum elemento da página (botão, link, etc).  Esta possui 3
-(três) variáveis que serão atribuídas  no código a seguir.  São elas  'element',
-representando o código xPath  da instrução e, respectivamente, msgOk e msgError, 
-as mensagens de validação e erro da função.
+finalidade clicar em algum elemento  da página  (botão, link, etc).  Esta possui
+uma variável que será atribuída a função. Neste caso, temos a variável 'element'
+representando o código xPath da instrução.
 
-	Explicadas as variáveis,  vamos falar dos componentes que formam a estrutura
-da função. Na primeira  linha temos um  'if'  que valida a condição  da variável
-'testPassed'. Caso seja true, o teste continua. Caso o teste  quebre, a variável
-recebe o valor false e  interrompe o teste.  Na sequência, temos a construção da
-estrutura try / cacth. Dentro do try, temos a instrução em  Selenium que executa
-um click no elemento determinado pela  variável  'element'. Logo abaixo  temos o 
-return da função com a  mensagem acertiva.  Em seguida, dentro do catch, temos a
-atribuição do  valor 'false' para a variável 'testPassed',  com a  finalidade de
-interromper o fluxo do teste. Finalmente, temos o return com a mensagem de erro.
-Só relembrando, o arquivo log é salvo em formato HTML. Por esse motivo é preciso
-incluir algumas tags HTML nos returns para que a estrutura do log seja criada de
-forma correta.
+	Quanto aos componentes  que formam a estrutura da função,  na primeira linha
+temos um 'if' que valida a condição da variável 'testPassed'.  Caso seja true, o
+teste segue. Caso o teste quebre, a variável recebe o valor false, interrompendo
+o teste. Na sequência, temos a construção da estrutura  try/cacth. Dentro do try
+temos a instrução em  Selenium que executa um click no elemento determinado pela
+variável 'element'. Logo abaixo temos o return da função com a mensagem acertiva
+e abaixo, dentro do catch, temos a atribuição do valor  'false'  para a variável
+'testPassed', com a finalidade de interromper o fluxo do teste.
 
-	A estrutura vista a cima é a função primária, utilizando Selenium WebDriver,
-que deve ser  armazenada no arquivo  DSL.cs. Veremos agora a  construção  de uma
-função a ser utilizada no Page do projeto, para ser  chamada através  do arquivo
-Test. É nesta função  que informamos  todos os valores  a serem  atribuídos  nas
+	A estrutura vista acima é a função primária, utilizando Selenium  WebDriver,
+que deve ser  armazenada no arquivo  DSL.cs. Veremos agora a  construção  de  um
+método a ser utilizado na Page do projeto, para ser  chamado através  do arquivo
+Test. É neste métodos que informamos  todos os valores  a serem  atribuídos  nas
 variáveis das funções primárias contidas na DSL. Vejamos o exemplo abaixo:
 
-	public string ClicaBtnProxima()
+	public void ClicaBtnProxima()
 	{
-		return ClicaElemento(
-		"//*[contains(text(),'Próxima')]",
-		"Clicou no botão Próxima",
-		"Erro ao clicar no botão Próxima");
+		return ClicaElemento("//*[contains(text(),'Próxima')]");
+		ValidaStep("Clicou no botão Próxima", "Erro ao clicar no botão Próxima");
 	}
 
-	Assim como a função primária  ClicaElemento();,  as funções criadas  no Page
-devem ser do tipo 'string' pois precisam retornar as mensagens  de erro e acerto
-de cada passo. No exemplo  a cima, foi criada a função  ClicaBtnProxima();  para
-clicar no botão cujo texto é "Próxima". E a estrutura é  bem simples. Cria-se um
-return com a função primária desejada, passando os parâmetros conforme demanda a
-a função. No caso da  ClicaElemento();,  informa-se o  xPath  do elemento a  ser
-clicado e as mensagens de sucesso e erro da função.
+	No exemplo acima foi criado o método ClicaBtnProxima(); para clicar no botão
+cujo texto é "Próxima". A estrutura é simples. Informa-se o  xPath do elemento a
+ser clicado e as mensagens de sucesso e erro da função.
 
-	Para finalizar, a função criada no Page deve ser chamada pelo arquivo teste,
-sendo encapsulada pela função Log();. Esta função tem o papel de armazenar todos
-os registros capturados pela função (mensagens de sucesso e erro). Desta forma:
+	Para finalizar, o método criado na Page deve ser chamado pelo arquivo teste.
+Desta forma:
 
-	Log(ClicaBtnProxima());
+	page.ClicaBtnProxima();
 
 
 	6 - TIPOS DE FUNÇÕES PRIMÁRIAS
@@ -208,7 +200,6 @@ inglês para diferenciá-las das demais.
 	Funções que atribuem algum valor a uma variável, como capturar o texto de um
 determinado campo e guardá-lo em uma variável.
 
-
 	De interação:
 	-------------
 	Funções que interagem com o sistema e validam os steps  pré-estabelecidos no
@@ -224,18 +215,18 @@ erro ou sucesso dos testes.
 	----------------------
 
 	# Wait(int time): Usa-se para fazer pausa entre funções.
-	Ex.: Wait(2000);
+	Exemplo: Wait(2000);
 
 	# WaitElement(string element): Aguarda até que o elemento  desejado  apareça
 na tela. O tempo de espera pode ser alterado.
-	Ex.: WaitElement("//*[@id='btnSalvar']");
+	Exemplo: WaitElement("//*[@id='btnSalvar']");
 
 	# WaitElementGone(string element): Aguarda até que um elemento que esteja na
 tela desapareça. O tempo de espera pode ser alterado.
-	Ex.: WaitElementGone("//*[@id='modalAlert']");
+	Exemplo: WaitElementGone("//*[@id='modalAlert']");
 
 	# ClearData(string element): Limpa o conteúdo de um campo.
-	Ex.: ClearData(//*[@id='campoNome']);
+	Exemplo: ClearData(//*[@id='campoNome']);
 
 	# ClickOut(): Clica fora de um determinado campo.
 
@@ -251,43 +242,43 @@ Fim do Teste OK.
 	# CapturaDadosBy(string element, string attribute):  Captura o valor  de  um
 campo ou elemento e o atribui a uma variável. Pode ser usado como atributo Value,
  InnerText, etc.
-	Ex.: string numProposta = CapturaDadosBy("xpathExemplo", "InnerText");
+	Exemplo: string numProposta = CapturaDadosBy("xpathExemplo", "InnerText");
 
 	# GeraStringPorTamanho(int times, string value):  Gera string com  um  valor
 pré-estabelecido. Útil para validação de tamanho máximo de caracteres num campo.
-	Ex.: string maxSize10 = GeraStringPorTamanho(10, A);
+	Exemplo: string maxSize10 = GeraStringPorTamanho(10, A);
 
 	# GeraStringNumericaAleatoria(int size): Gera string numérica com númmero de
 caracteres pré-estabelecido.
-	Ex.: string strNum10 = GeraStringNumericaAleatoria(10);
+	Exemplo: string strNum10 = GeraStringNumericaAleatoria(10);
 
 	# GeraStringAlfanumericoAleatorio(int size):  Gera string  alfanumérica  com
 número de caracteres pré-estabelecido.
-	Ex.: string strChar7 = GeraStringAlfanumericoAleatorio(7);
+	Exemplo: string strChar7 = GeraStringAlfanumericoAleatorio(7);
 
 	# CapturaUrlAtual(): Captura o endereço atual exibido na barra do  navegador
 e o atribui a uma variável.
-	Ex.: string urlAtual = CapturaUrlAtual();
+	Exemplo: string urlAtual = CapturaUrlAtual();
 
 	# GeraNomeAleatorio(): Gera nome aleatório (nome e sobrenome)  e o atribui a
 uma variável.
-	Ex.: string nome = GeraNomeAleatorio();
+	Exemplo: string nome = GeraNomeAleatorio();
 
 	# GeraEmailAleatorio(): Gera e-mail aleatório e o atribui a uma variável
-	Ex.: string email = GeraEmailAleatorio();
+	Exemplo: string email = GeraEmailAleatorio();
 
 	# GeraDataNascimento(): Gera uma data de nascimento aleatória  e a atribui a
 uma variável.
-	Ex.: string dataNascRnd = GeraDataNascimento();
+	Exemplo: string dataNascRnd = GeraDataNascimento();
 
 	# GeraCPF(): Gera CPF aleatório e o atribui a uma variável.
-	Ex.: string cpf = GeraCPF();
+	Exemplo: string cpf = GeraCPF();
 
 	# GeraCNPJ(): Gera CNPJ aleatório e o atribui a uma variável.
-	Ex.: string cnpj = GeraCNPJ);
+	Exemplo: string cnpj = GeraCNPJ);
 
 		# GeraCEP(): Gera CEP aleatório e o atribui a uma variável.
-	Ex.: string cep = GeraCEP();
+	Exemplo: string cep = GeraCEP();
 
 	--------------------
 	Funções de interação
@@ -296,19 +287,20 @@ uma variável.
 	Observação: Todas as funções de interação devem  ser utilizadas  como return
 das funções criadas na classe page.
 
-	# ClicaElemento(string element, string msgOk, string msgError, int wait = 1000)
-elemento a partir de seu xPath.
-	Ex.: ClicaElemento(
-		"//*[@id='btnSalvar']",
-		"Clicou no botão Salvar",
-		"Erro ao clicar no botão Salvar",
-		3000);
-	Observação: Por padrão, esta função tem timer de 1 segundo após o clique. Este
+	# ClicaElemento(string element, int wait = 1000)
+	Clica num determinado elemento a partir de seu xPath.
+
+	Exemplo: 
+	ClicaElemento("//*[@id='btnSalvar']", 3000);
+	ValidaStep("Clicou no botão Salvar", "Erro ao clicar no botão Salvar");
+
+	Observação: Por padrão, esta função tem timer de 1 segundo após o clique. Tal
 valor pode ser alterado conforme mostrado aqui, digitando o valor esperado.
 
-	# EscreveTexto(string element, string value, string msgOk, string msgError):
-Preenche um determinado campo com o valor informado.
-	Ex.: EscreveTexto(
+	# EscreveTexto(string element, string value):
+	Preenche um determinado campo com o valor informado.
+
+	Exemplo: EscreveTexto(
 		"//*[@id='campoNome']",
 		"Ricardo Oliveira", 
 		"Preencheu o nome Ricardo Oliveira",
@@ -316,7 +308,7 @@ Preenche um determinado campo com o valor informado.
 
 	# ValidaDados(string element, string value, string msgOk, string msgError):
 Verifica se o valor informado está presente no local do xPath indicado.
-	Ex.: ValidaDados(
+	Exemplo: ValidaDados(
 		"//*[@id='colunaCEP']",
 		"01409-020", 
 		"Validou o CEP 01409-020",
@@ -325,7 +317,7 @@ Verifica se o valor informado está presente no local do xPath indicado.
 	# MenuDropDown(string element, string value, string msgOk, string msgError):
 Substitui o SelectDropDown do Selenium (que só funciona em menus simples). clica
 no menu desejado através de xPath e seleciona o valor desejado dentro do menu.
-	Ex.: MenuDropDown(
+	Exemplo: MenuDropDown(
 		"//*[@id='menuEstado']",
 		"São Paulo", 
 		"Selecionou o Estado São Paulo",
@@ -334,7 +326,7 @@ no menu desejado através de xPath e seleciona o valor desejado dentro do menu.
 	# UploadArquivo(string input, string path, string msgOk, string msgError):
 Seleciona um determinado arquivo para fazer upload através do  caminho local do
 arquivo apontando para o input da página.
-	Ex.: UploadArquivo(
+	Exemplo: UploadArquivo(
 		"//*[@id='uploadfile']",
 		@"C:\Projetos\Documentação.txt", 
 		"Selecionou o arquivo Documentação.txt",
@@ -343,7 +335,7 @@ arquivo apontando para o input da página.
 	# DownloadArquivo(string fileName, string msgOk, string msgError):  Verifica
 o download de um arquivo através do seu nome. Por padrão, a validação é feita na
 pasta Downloads do Windows. Este caminho pode ser alterado na função.
-	Ex.: DownloadArquivo(
+	Exemplo: DownloadArquivo(
 		"planilhaXYZ.xlsx",
 		"Validou o download do arquivo planilhaXYZ.xlsx",
 		"Erro ao validar o download do arquivo planilhaXYZ.xlsx");

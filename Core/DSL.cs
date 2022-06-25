@@ -11,11 +11,10 @@ namespace BaseProjectAutomation.Core
 {
     class DSL : LogSystem
     {
-        #region Funções de interação
+        #region Funções de manipulação
         public void Wait(int time) => Thread.Sleep(time);
         public void ClearData(string element) => driver.FindElement(By.XPath(element)).Clear();
         public void ClickOut() => driver.FindElement(By.XPath("//html")).Click();
-        public string EndFile() { if (!testPassed) { Assert.Fail(); } return Log(testOk); }
         public void WaitElement(string element)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(90));
@@ -25,6 +24,112 @@ namespace BaseProjectAutomation.Core
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(90));
             Wait(1000); wait.Until(d => d.FindElements(By.XPath(element)).Count == 0); Wait(2000);
+        }
+        public string ValidaStep(string msgOk, string msgError)
+        {
+            if (testPassed)
+            { return Log(msgOk + "<br>"); }
+            else { return Log("<font color = red>" + msgError + testNok); }
+        }
+        public string EndFile() { if (!testPassed) { Assert.Fail(); } return Log(testOk); }
+        #endregion
+
+        #region Funções de interação
+        public void ClicaElemento(string element, int wait = 1000, string loading = null)
+        {
+            if (!testPassed) Assert.Fail();
+            try
+            {
+                driver.FindElement(By.XPath(element)).Click(); Wait(wait);
+                if (loading != null) WaitElementGone("value");
+            }
+            catch
+            {
+                testPassed = false;
+            }
+        }
+        public void EscreveTexto(string element, string value, string clickOut = null)
+        {
+            if (!testPassed) Assert.Fail();
+            try
+            {
+                driver.FindElement(By.XPath(element)).SendKeys(value);
+                if (clickOut != null) ClickOut();
+            }
+            catch
+            {
+                testPassed = false;
+            }
+        }
+        public void ValidaDados(string xPath, string value)
+        {
+            if (!testPassed) Assert.Fail();
+            try
+            {
+                Assert.IsTrue(driver.FindElement(By.XPath(xPath)).Text.Contains(value));
+            }
+            catch
+            {
+                testPassed = false;
+            }
+        }
+        public void MenuDropDown(string xPath1, string xPath2)
+        {
+            if (!testPassed) Assert.Fail();
+            try
+            {
+                driver.FindElement(By.XPath(xPath1)).Click(); Wait(500);
+                driver.FindElement(By.XPath(xPath2)).Click(); Wait(750);
+            }
+            catch
+            {
+                testPassed = false;
+            }
+        }
+        public void UploadArquivo(string input, string path)
+        {
+            if (!testPassed) Assert.Fail();
+            try
+            {
+                driver.FindElement(By.XPath(input)).SendKeys(path);
+            }
+            catch
+            {
+                testPassed = false;
+            }
+        }
+        public void ValidaDownload(string partialFileName)
+        {
+            if (!testPassed) Assert.Fail();
+            try
+            {
+                DirectoryInfo downloadsPath = new DirectoryInfo(Environment.GetEnvironmentVariable("USERPROFILE") + @"\Downloads\");
+                FileInfo[] filesInFolder = downloadsPath.GetFiles(partialFileName + "*.*");
+
+                foreach (FileInfo foundFile in filesInFolder)
+                {
+                    string fullFileName = foundFile.FullName;
+
+                    for (int i = 0; i < 30; i++)
+                    {
+                        if (File.Exists(fullFileName)) { break; }
+                        Wait(1000);
+                    }
+                    var length = new FileInfo(fullFileName).Length;
+                    for (int i = 0; i < 60; i++)
+                    {
+                        Wait(1000);
+                        var newLength = new FileInfo(fullFileName).Length;
+                        if (newLength == length && length != 0) { break; }
+                        length = newLength;
+                    }
+                    File.Delete(fullFileName);
+                }
+            }
+            catch
+            {
+                testPassed = false;
+            }
         }
         #endregion
 
@@ -160,118 +265,5 @@ namespace BaseProjectAutomation.Core
             return cepRnd;
         }
         #endregion
-
-        // Funções de interação --------------------------------------------------
-        public string ValidaStep(string msgOk, string msgError)
-        {
-            if (testPassed)
-            { return Log(msgOk + "<br>"); }
-            else { return Log("<font color = red>" + msgError + testNok); }
-        }
-
-        public void ClicaElemento(string element, int wait = 1000, string loading = null)
-        {
-            if (!testPassed) Assert.Fail();
-            try
-            {
-                driver.FindElement(By.XPath(element)).Click(); Wait(wait);
-                if (loading != null) WaitElementGone("value");
-            }
-            catch
-            {
-                testPassed = false;
-            }
-        }
-        public void EscreveTexto(string element, string value, string clickOut = null)
-        {
-            if (!testPassed) Assert.Fail();
-            try
-            {
-                driver.FindElement(By.XPath(element)).SendKeys(value);
-                if (clickOut != null) ClickOut();
-            }
-            catch
-            {
-                testPassed = false;
-            }
-        }
-        public string ValidaDados(string xPath, string value, [Optional] string msgOk, [Optional] string msgError)
-        {
-            if (!testPassed) Assert.Fail();
-            try
-            {
-                Assert.IsTrue(driver.FindElement(By.XPath(xPath)).Text.Contains(value));
-                return msgOk + "<br>";
-            }
-            catch
-            {
-                testPassed = false;
-                return "<font color = red>" + msgError + testNok;
-            }
-        }
-        public string MenuDropDown(string xPath1, string xPath2, [Optional] string msgOk, [Optional] string msgError)
-        {
-            if (!testPassed) Assert.Fail();
-            try
-            {
-                driver.FindElement(By.XPath(xPath1)).Click(); Wait(500);
-                driver.FindElement(By.XPath(xPath2)).Click(); Wait(750);
-                return msgOk + "<br>";
-            }
-            catch
-            {
-                testPassed = false;
-                return "<font color = red>" + msgError + testNok;
-            }
-        }
-        public string UploadArquivo(string input, string path, [Optional] string msgOk, [Optional] string msgError)
-        {
-            if (!testPassed) Assert.Fail();
-            try
-            {
-                driver.FindElement(By.XPath(input)).SendKeys(path);
-                return msgOk + "<br>";
-            }
-            catch
-            {
-                testPassed = false;
-                return "<font color = red>" + msgError + testNok;
-            }
-        }
-        public string ValidaDownload(string partialFileName, [Optional] string msgOk, [Optional] string msgError)
-        {
-            if (!testPassed) Assert.Fail();
-            try
-            {
-                DirectoryInfo downloadsPath = new DirectoryInfo(Environment.GetEnvironmentVariable("USERPROFILE") + @"\Downloads\");
-                FileInfo[] filesInFolder = downloadsPath.GetFiles(partialFileName + "*.*");
-
-                foreach (FileInfo foundFile in filesInFolder)
-                {
-                    string fullFileName = foundFile.FullName;
-
-                    for (int i = 0; i < 30; i++)
-                    {
-                        if (File.Exists(fullFileName)) { break; }
-                        Wait(1000);
-                    }
-                    var length = new FileInfo(fullFileName).Length;
-                    for (int i = 0; i < 60; i++)
-                    {
-                        Wait(1000);
-                        var newLength = new FileInfo(fullFileName).Length;
-                        if (newLength == length && length != 0) { break; }
-                        length = newLength;
-                    }
-                    File.Delete(fullFileName);
-                }
-                return msgOk + "<br>";
-            }
-            catch
-            {
-                testPassed = false;
-                return "<font color = red>" + msgError + testNok;
-            }
-        }
     }
 }
