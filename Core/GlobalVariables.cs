@@ -2,7 +2,7 @@
 
 namespace BaseProjectAutomation.Core
 {
-    public class GlobalVariables
+    class GlobalVariables
     {
 
         // Define 'driver' como trigger para os WebElements
@@ -12,7 +12,7 @@ namespace BaseProjectAutomation.Core
         public static bool testPassed = true;
 
         // Define 'Fechar navegador ao final do teste' como padrão
-        public bool driverQuit = true;
+        public static bool driverQuit = true;
 
         // Gera log em formato HTML
         public bool saveLog = true;
