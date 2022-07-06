@@ -12,12 +12,14 @@ namespace BaseProjectAutomation.Test
         {
             string email = "ricardo.bornin77@gmail.com";
             EscreveTexto("//*[@id='identifierId']", email);
-            ValidaStep("Preencheu e-mail " + email, "Erro ao preencher e-mail " + email);
+            ValidaStep("Preencheu e-mail " + email,
+                "Erro ao preencher e-mail " + email);
         }
         public void ClicaBtnProxima()
         {
             ClicaElemento("//*[contains(text(),'Próxima')]");
-            ValidaStep("Clicou no botão Próxima", "Erro ao clicar no botão Próxima");
+            ValidaStep("Clicou no botão Próxima",
+                "Erro ao clicar no botão Próxima");
         }
     }
 }

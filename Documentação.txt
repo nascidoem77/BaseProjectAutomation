@@ -23,12 +23,6 @@ conforme o exemplo abaixo:
 	Pasta Page -> classe ValidaCadstroPage.cs
 	Pasta Test -> classe ValidaCadastro.cs (ou ValidaCadastroTest.cs)
 
-	Referenciando a classe page dentro da classe test:
-	var page = new ValidaCadastroPage();
-
-	E a chamada da função na classe test:
-	page.ClicaMenuPrincipal();
-
 	Esta estrutura pode ser verificada no teste de exemplo deste projeto.
 
 
@@ -99,6 +93,12 @@ da seguinte forma:
 
 	E, desta forma, todas as demais classes, tanto pages quanto testes, herdarão
 de Begin. Este exemplo pode ser observado no modelo de teste AcessaGmail.cs.
+
+	Já em relação aos testes, estes herdarão da sua classe page que, por sua vez
+herdará de Begin.cs. Conforme o exemplo abaixo:
+
+	class AcessaGmail : AcessaGmailPage
+	class AcessaGmailPage : Begin
 
 	
 	4 - INTERAÇÃO DAS FUNÇÕES COM OS ELEMENTOS DA PÁGINA
