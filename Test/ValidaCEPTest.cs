@@ -5,10 +5,10 @@ namespace BaseProjectAutomation.Test
     class ValidaCepTest : ValidaCepPage
     {
         [Test]
-        public void AcessaGmailTest()
+        public void ValidaCep()
         {
             // Define nome para arquivo log (null = class name)
-            logFileName = "Valice CEP";
+            logFileName = "Valida CEP";
 
             // Define o cabeçalho do log
             LogHeader();
