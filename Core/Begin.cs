@@ -31,7 +31,7 @@ namespace BaseProjectAutomation.Core
         public void StartTest()
         {
             AbreNavegador();
-            driver.Navigate().GoToUrl("https://buscacepinter.correios.com.br/app/endereco/index.php");
+            driver.Navigate().GoToUrl("http://www.buscacep.correios.com.br");
         }
         #endregion
 
