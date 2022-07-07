@@ -2,20 +2,21 @@
 
 namespace BaseProjectAutomation.Test
 {
-    class AcessaGmail : AcessaGmailPage
+    class ValidaCepTest : ValidaCepPage
     {
         [Test]
         public void AcessaGmailTest()
         {
             // Define nome para arquivo log (null = class name)
-            logFileName = "Acessa G-Mail";
+            logFileName = "Valice CEP";
 
             // Define o cabeçalho do log
             LogHeader();
 
             // Execução dos steps
-            PreencheEmail();
-            ClicaBtnProxima();
+            PreencheCEP();
+            ClicaBtnBuscar();
+            ValidaLogradouro();
 
             // Fim do Teste
             EndFile();
