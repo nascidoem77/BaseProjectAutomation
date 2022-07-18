@@ -30,6 +30,18 @@ namespace BaseProjectAutomation.Core
             { return Log(msgOk + "<br>"); }
             else { return Log("<font color = red>" + msgError + testNok); }
         }
+        public bool ValidaElementoExistente(string xPath)
+        {
+            try
+            {
+                driver.FindElement(By.XPath(xPath));
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
         public string EndFile() { if (!testPassed) { Assert.Fail(); } return Log(testOk); }
         #endregion
 

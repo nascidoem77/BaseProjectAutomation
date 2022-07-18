@@ -68,7 +68,7 @@ colocada ao final de cada método na page. Exemplo:
 
 	public void ClicaBtnProxima()
 	{
-		return ClicaElemento("//*[contains(text(),'Próxima')]");
+		ClicaElemento("//*[contains(text(),'Próxima')]");
 		ValidaStep("Clicou no botão Próxima", "Erro ao clicar no botão Próxima");
 	}
 
@@ -170,7 +170,7 @@ variáveis das funções primárias contidas na DSL. Vejamos o exemplo abaixo:
 
 	public void ClicaBtnProxima()
 	{
-		return ClicaElemento("//*[contains(text(),'Próxima')]");
+		ClicaElemento("//*[contains(text(),'Próxima')]");
 		ValidaStep("Clicou no botão Próxima", "Erro ao clicar no botão Próxima");
 	}
 
@@ -181,7 +181,7 @@ ser clicado e as mensagens de sucesso e erro da função.
 	Para finalizar, o método criado na Page deve ser chamado pelo arquivo teste.
 Desta forma:
 
-	page.ClicaBtnProxima();
+	ClicaBtnProxima();
 
 
 	6 - TIPOS DE FUNÇÕES PRIMÁRIAS
@@ -230,10 +230,21 @@ tela desapareça. O tempo de espera pode ser alterado.
 
 	# ClickOut(): Clica fora de um determinado campo.
 
+	# ValidaElementoExistente(); Usa-se com if na Page para validar a existência
+de um determinado elemento na página, com a finalidade de determinar o que fazer
+após a validação do elemento.
+	Exemplo: if (ValidaElementoExistente(btnSalvar))
+				{
+				executa ação (botão existe)
+				}
+			else
+				{
+				executa ação (botão não existe)
+				}
+
 	# EndFile():  Usa-se no final de cada  classe de teste  com a  finalidade de
 validar como true a variável testPassed e imprimir no arquivo log a mensagem  de
 Fim do Teste OK.
-	Sintaxe: Log(EndFile());
 
 	---------------------
 	Funções de atribuição
