@@ -18,7 +18,7 @@ namespace BaseProjectAutomation.Core
             string htmlStart = "<html><body><p><font face = Verdana size = 2>";
             string htmlEnd = "</p></font></body></html>";
             string header = "<b>ACESSO AO SISTEMA<br>==============</b><br>" +
-                "Abriu o navegador e acessou o <b>BMG SEGUROS</b><p>";
+                "Abriu o navegador e acessou o <b>NOME DO SISETMA</b><p>";
 
             if (logFileName != null) { fileName = logFileName; }
             else { fileName = GetType().Name; }

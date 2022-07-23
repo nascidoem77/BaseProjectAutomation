@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
+using System;
 
 namespace BaseProjectAutomation.Core
 {
@@ -23,6 +24,7 @@ namespace BaseProjectAutomation.Core
 
             if (headlessTest) { driver = new ChromeDriver(headlessMode); }
             else { driver = new ChromeDriver(devMode); driverQuit = false; }
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
         }
         #endregion
 

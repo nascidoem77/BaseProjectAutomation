@@ -24,7 +24,7 @@ namespace BaseProjectAutomation.Test
         public void ValidaLogradouro()
         {
             string logradouro = "Rua Ernani Agricola";
-            ValidaDados("//*[contains(text(),'Rua Ernani Agricola')]", logradouro);
+            ValidaDados("//*[@id='resultado-DNEC']/tbody/tr/td[1]", logradouro);
             ValidaStep("Validou o logradouro " + logradouro,
                 "Erro ao validar o logradouro " + logradouro);
         }

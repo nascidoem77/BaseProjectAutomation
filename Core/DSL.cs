@@ -17,12 +17,12 @@ namespace BaseProjectAutomation.Core
         public void WaitElement(string element)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(90));
-            Wait(1000); wait.Until((d) => { return d.FindElement(By.XPath(element)); }); Wait(2000);
+            wait.Until((d) => { return d.FindElement(By.XPath(element)); });
         }
         public void WaitElementGone(string element)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(90));
-            Wait(1000); wait.Until(d => d.FindElements(By.XPath(element)).Count == 0); Wait(2000);
+            wait.Until(d => d.FindElements(By.XPath(element)).Count == 0);
         }
         public string ValidaStep(string msgOk, string msgError)
         {
@@ -33,81 +33,42 @@ namespace BaseProjectAutomation.Core
         public bool ValidaElementoExistente(string xPath)
         {
             try
-            {
-                driver.FindElement(By.XPath(xPath));
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            { driver.FindElement(By.XPath(xPath)); return true; }
+            catch (NoSuchElementException) { return false; }
         }
         public string EndFile() { if (!testPassed) { Assert.Fail(); } return Log(testOk); }
         #endregion
 
         #region Funções de interação
-        public void ClicaElemento(string element, int wait = 1000, string loading = null)
+        public void ClicaElemento(string element)
         {
             if (!testPassed) Assert.Fail();
-            try
-            {
-                driver.FindElement(By.XPath(element)).Click(); Wait(wait);
-                if (loading != null) WaitElementGone("value");
-            }
-            catch
-            {
-                testPassed = false;
-            }
+            try { driver.FindElement(By.XPath(element)).Click(); }
+            catch { testPassed = false; }
         }
-        public void EscreveTexto(string element, string value, string clickOut = null)
+        public void EscreveTexto(string element, string value)
         {
             if (!testPassed) Assert.Fail();
-            try
-            {
-                driver.FindElement(By.XPath(element)).SendKeys(value);
-                if (clickOut != null) ClickOut();
-            }
-            catch
-            {
-                testPassed = false;
-            }
+            try { driver.FindElement(By.XPath(element)).SendKeys(value); }
+            catch { testPassed = false; }
         }
         public void ValidaDados(string xPath, string value)
         {
             if (!testPassed) Assert.Fail();
-            try
-            {
-                Assert.IsTrue(driver.FindElement(By.XPath(xPath)).Text.Contains(value));
-            }
-            catch
-            {
-                testPassed = false;
-            }
+            try { Assert.IsTrue(driver.FindElement(By.XPath(xPath)).Text.Contains(value)); }
+            catch { testPassed = false; }
         }
         public void MenuDropDown(string xPath1, string xPath2)
         {
             if (!testPassed) Assert.Fail();
-            try
-            {
-                driver.FindElement(By.XPath(xPath1)).Click(); Wait(500);
-                driver.FindElement(By.XPath(xPath2)).Click(); Wait(750);
-            }
-            catch
-            {
-                testPassed = false;
-            }
+            try { driver.FindElement(By.XPath(xPath1)).Click(); driver.FindElement(By.XPath(xPath2)).Click(); }
+            catch { testPassed = false; }
         }
         public void UploadArquivo(string input, string path)
         {
             if (!testPassed) Assert.Fail();
-            try
-            {
-                driver.FindElement(By.XPath(input)).SendKeys(path);
-            }
-            catch
-            {
-                testPassed = false;
-            }
+            try { driver.FindElement(By.XPath(input)).SendKeys(path); }
+            catch { testPassed = false; }
         }
         public void ValidaDownload(string partialFileName)
         {
@@ -137,10 +98,7 @@ namespace BaseProjectAutomation.Core
                     File.Delete(fullFileName);
                 }
             }
-            catch
-            {
-                testPassed = false;
-            }
+            catch { testPassed = false; }
         }
         #endregion
 
