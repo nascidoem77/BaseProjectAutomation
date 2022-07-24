@@ -44,31 +44,31 @@ namespace BaseProjectAutomation.Core
         {
             if (!testPassed) Assert.Fail();
             try { driver.FindElement(By.XPath(element)).Click(); }
-            catch { testPassed = false; }
+            catch (Exception ex) { Console.WriteLine(ex.Message); testPassed = false; }
         }
         public void EscreveTexto(string element, string value)
         {
             if (!testPassed) Assert.Fail();
             try { driver.FindElement(By.XPath(element)).SendKeys(value); }
-            catch { testPassed = false; }
+            catch (Exception ex) { Console.WriteLine(ex.Message); testPassed = false; }
         }
         public void ValidaDados(string xPath, string value)
         {
             if (!testPassed) Assert.Fail();
             try { Assert.IsTrue(driver.FindElement(By.XPath(xPath)).Text.Contains(value)); }
-            catch { testPassed = false; }
+            catch (Exception ex) { Console.WriteLine(ex.Message); testPassed = false; }
         }
         public void MenuDropDown(string xPath1, string xPath2)
         {
             if (!testPassed) Assert.Fail();
             try { driver.FindElement(By.XPath(xPath1)).Click(); driver.FindElement(By.XPath(xPath2)).Click(); }
-            catch { testPassed = false; }
+            catch (Exception ex) { Console.WriteLine(ex.Message); testPassed = false; }
         }
         public void UploadArquivo(string input, string path)
         {
             if (!testPassed) Assert.Fail();
             try { driver.FindElement(By.XPath(input)).SendKeys(path); }
-            catch { testPassed = false; }
+            catch (Exception ex) { Console.WriteLine(ex.Message); testPassed = false; }
         }
         public void ValidaDownload(string partialFileName)
         {
@@ -98,7 +98,7 @@ namespace BaseProjectAutomation.Core
                     File.Delete(fullFileName);
                 }
             }
-            catch { testPassed = false; }
+            catch (Exception ex) { Console.WriteLine(ex.Message); testPassed = false; }
         }
         #endregion
 
